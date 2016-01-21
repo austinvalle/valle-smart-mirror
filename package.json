@@ -1,0 +1,23 @@
+{
+  "name": "valle-smart-mirror",
+  "version": "1.0.0",
+  "description": "A smart mirror web application that displays time, weather, google calendar events, and more.",
+  "scripts": {
+    "start": "nodemon bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moosebot/valle-smart-mirror.git"
+  },
+  "author": "moosebot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moosebot/valle-smart-mirror/issues"
+  },
+  "homepage": "https://github.com/moosebot/valle-smart-mirror#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "speedtest-net": "^1.2.4"
+  }
+}

@@ -1,0 +1,16 @@
+﻿#!/usr/bin/env node
+var https = require('https');
+var fs = require('fs');
+var express = require('express');
+var app = express();
+
+var options = {
+	key: fs.readFileSync('ca.key'),
+	cert: fs.readFileSync('ca.crt')
+};
+
+app.use('/', express.static(__dirname + '/../public'));
+
+https.createServer(options, app).listen(8080, function(){
+	console.log("Express server running on port 8080...");
+});
