@@ -27,32 +27,46 @@
 </head>
 <body ng-controller="MirrorController as mirror">
 	<div>
-		<div class="pull-left fade" ng-show="showTime">
-			<div class="date">{{currentDate | date: 'EEEE, MMMM d yyyy'}}</div>
-			<div class="time">{{currentDate | date: 'hh:mm a'}}</div>
-		</div>
-		<div class="pull-right fade" ng-show="showWeather">
-			<div class="weather">
-				<div class="current-weather">
-					<span class="temperature">{{currentForecast.temperature | number: 0}}&deg;</span>
+		<div class="wrapper">
+			<div class="pull-left">
+				<div class="fade" ng-show="showTime">
+					<div class="date">{{currentDate | date: 'EEEE, MMMM d yyyy'}}</div>
+					<div class="time">{{currentDate | date: 'hh:mm a'}}</div>
 				</div>
-				<div class="weekly-weather-summary">{{weeklyForecast.summary}}</div>
-				<div class="weekly-weather" ng-repeat="forecast in weeklyForecast.data" ng-if="$index > 0">
-					<div class="weekly-weather-day">
-						<span class="day">{{forecast.day}}</span>
-						<span class="temperature temperature-min">{{forecast.temperatureMin | number: 0}}&deg;</span>
-						<span class="temperature temperature-max">{{forecast.temperatureMax | number: 0}}&deg;</span>
+				<div class="fade" style="margin-top: 90px;" ng-show="showEvents">
+					<div class="weekly-events" ng-repeat="day in currentWeek">
+						<h4 class="day-header">
+							<span ng-if="isToday(day)"><b>TODAY</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
+							<span ng-if="isTomorrow(day)"><b>TOMORROW</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
+							<span ng-if="!isToday(day) && !isTomorrow(day)"><b>{{day | date: 'EEEE' | uppercase}}</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
+						</h4>
+						<div class="daily-events" ng-repeat="event in events | orderBy: sortEventDate" ng-if="compareDate(event.start, day)">
+							<span class="event-time">{{event.start.dateTime | date:'h:mm a'}}</span>
+							<span class="event-title">{{event.summary}}</span>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pull-right">
+				<div class="pull-right fade" ng-show="showWeather">
+					<div class="weather">
+						<div class="current-weather">
+							<span class="temperature">{{currentForecast.temperature | number: 0}}&deg;</span>
+						</div>
+						<div class="weekly-weather-summary">{{weeklyForecast.summary}}</div>
+						<div class="weekly-weather" ng-repeat="forecast in weeklyForecast.data" ng-if="$index > 0">
+							<div class="weekly-weather-day">
+								<span class="day">{{forecast.day}}</span>
+								<span class="temperature temperature-min">{{forecast.temperatureMin | number: 0}}&deg;</span>
+								<span class="temperature temperature-max">{{forecast.temperatureMax | number: 0}}&deg;</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="container">
-			<div class="pull-left middle-center" ng-show="showEvents">
-				<div class="weekly-events" ng-repeat="event in events | orderBy: sortEventDate">
-					<span class="event">{{event.summary}}</span>
-					<br>
-				</div>
-			</div>
 			<div class="middle-center"></div>
 			<div class="bottom-center">
 				<div class="commands animate-grow" ng-show="focus == 'commands'">

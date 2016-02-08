@@ -159,3 +159,32 @@ dt {
 .ng-hide {
     max-height: 0  !important;
 }
+
+.day-header {
+    background-color: darkslategrey;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0px 10px 0px;
+    font-size: 28px;
+}
+
+.day-header > span > i {
+    float: right;
+    margin-right: 5px;
+}
+
+.day-header > span > b {
+    margin-left: 5px;
+}
+
+.daily-events > span {
+    font-size: 28px;
+}
+
+.event-time {
+    margin-left: 5px;
+}
+
+.event-title {
+    float: right;
+}

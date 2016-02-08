@@ -16,11 +16,27 @@
 			$scope.showWeather = true;
 			$scope.showTime = true;
 			$scope.showEvents = true;
+            $scope.currentWeek = [];
 			$scope.events = [];
 
 			
 			var updateTime = function() {
-				$scope.currentDate = new Date();
+                var today = new Date();
+
+                if($scope.currentWeek.length == 0 || today.getFullYear() != $scope.currentDate.getFullYear() 
+                    || today.getMonth() != $scope.currentDate.getMonth()
+                    || today.getDate() != $scope.currentDate.getDate()) {
+
+                    $scope.currentWeek = [];
+                    for(var i = 0; i < 7; i++){
+                        var date = new Date();
+                        date.setDate(date.getDate() + i);
+
+                        $scope.currentWeek.push(date);
+                    }
+                }
+
+				$scope.currentDate = today;
 			};
 
 			var updateWeather = function() {
@@ -55,6 +71,33 @@
 
             $scope.sortEventDate = function(event){
                 return moment(event.start.dateTime || event.start.date);
+            };
+
+            $scope.compareDate = function(start, date){
+                var eventDate = start.dateTime || start.date;
+                eventDate = new Date(eventDate);
+
+
+                if (!(date instanceof Date)) {
+                    return false;
+                };
+
+                return eventDate.getFullYear() == date.getFullYear()
+                        && eventDate.getDate() == date.getDate()
+                        && eventDate.getMonth() == date.getMonth();
+            };
+
+            $scope.isToday = function (date){
+                return date.getDate() == $scope.currentDate.getDate();
+            };
+
+            $scope.isTomorrow = function (date){
+                return date.getDate() == $scope.currentDate.getDate() + 1;
+            };
+
+            $scope.notTodayOrTomorrow = function(date){
+                return date.getDate() != $scope.currentDate.getDate()
+                    && date.getDate() != $scope.currentDate.getDate() + 1;
             };
 
 			updateTime();
@@ -110,6 +153,14 @@
 
             VoiceService.addCommand('Show (the) time', function() {
                 $scope.showTime = true;
+            });
+
+            VoiceService.addCommand('Hide (my) events', function() {
+                $scope.showEvents = false;
+            });
+
+            VoiceService.addCommand('Show (my) events', function() {
+                $scope.showEvents = true;
             });
 
             var resetCommandTimeout;
