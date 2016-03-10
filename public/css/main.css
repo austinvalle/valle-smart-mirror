@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
 
 body {
-	font-family: 'Lato', sans-serif;
-	font-weight: 400;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
 	background-color: black;
 	color: white;
 }
@@ -12,7 +12,7 @@ h2,
 h3,
 h4,
 h5 {
-    font-weight: 300;
+    font-weight: 400;
 }
 
 h1 {
@@ -20,7 +20,7 @@ h1 {
 }
 
 dt {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .pull-left {
@@ -49,13 +49,10 @@ dt {
     font-size: 80px;
 }
 
-.weekly-weather-summary {
-    font-family: 'Open Sans', sans-serif;
+.current-weather-summary {
     font-size: 12px;
     max-width: 55%;
-    margin-left: auto;
-    margin-bottom: 10px;
-    text-align: justify;
+    text-align: left;
 }
 
 .weekly-weather {
@@ -85,7 +82,7 @@ dt {
 }
 
 .container {
-    z-index: -1; /* so things are still selectable */
+    z-index: -1;
     position: fixed;
     top: 0;
     left: 0;
@@ -110,7 +107,6 @@ dt {
 }
 
 .bottom-center {
-    font-family: 'Open Sans', sans-serif;
     width: 100%;
     text-align: center;
     margin-bottom: 20px;
@@ -121,10 +117,6 @@ dt {
     text-align: left;
     margin-left: auto;
     margin-right: auto;
-}
-
-.listening, .voice-result {
-    font-family: 'Open Sans', sans-serif;
 }
 
 .fade.ng-hide {
@@ -161,8 +153,10 @@ dt {
 }
 
 .day-header {
-    background-color: darkslategrey;
+    background-color: white;
+    color:black;
     border-radius: 5px;
+    font-weight: 300;
     padding: 5px;
     margin: 10px 0px 10px 0px;
     font-size: 28px;
@@ -179,6 +173,11 @@ dt {
 
 .daily-events > span {
     font-size: 28px;
+    width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-align: right;
 }
 
 .event-time {
@@ -187,4 +186,8 @@ dt {
 
 .event-title {
     float: right;
+}
+
+.small-temperature {
+    font-size: 40px;
 }

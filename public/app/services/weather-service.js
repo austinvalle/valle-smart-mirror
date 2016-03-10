@@ -21,6 +21,16 @@
 				}
 
 				service.forecast.data.currently.day = moment.unix(service.forecast.data.currently.time).format('ddd');
+
+				for (var i = 0; i < service.forecast.data.daily.data.length; i++) {
+                	service.forecast.data.daily.data[i].day = moment.unix(service.forecast.data.daily.data[i].time).format('ddd');
+
+                	if(service.forecast.data.currently.day === service.forecast.data.daily.data[i].day){
+                		service.forecast.data.currently.minTemp = service.forecast.data.daily.data[i].temperatureMin;
+                		service.forecast.data.currently.maxTemp = service.forecast.data.daily.data[i].temperatureMax;
+                	}
+            	};
+
 				return service.forecast.data.currently;
 			};
 
@@ -30,9 +40,10 @@
 				}
 
 				for (var i = 0; i < service.forecast.data.daily.data.length; i++) {
-                	service.forecast.data.daily.data[i].day = moment.unix(service.forecast.data.daily.data[i].time).format('ddd');
-            	};
-            	return service.forecast.data.daily;
+					service.forecast.data.daily.data[i].day = moment.unix(service.forecast.data.daily.data[i].time).format('ddd');
+				}
+
+				return service.forecast.data.daily;
 			};
 
 			service.refreshWeather = function(){

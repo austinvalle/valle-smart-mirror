@@ -4,21 +4,15 @@
 	angular.module('SmartMirror').controller('MirrorController', [
 		'$scope',
 		'$interval',
-		'$timeout',
 		'$window',
         '$filter',
 		'GeolocationService',
 		'WeatherService',
-		'VoiceService',
 		'GoogleApiService',
-		function($scope, $interval, $timeout, $window, $filter, GeolocationService, WeatherService, VoiceService, GoogleApiService){
-			var DEFAULT_COMMAND_TEXT = 'Say "What can I say?" to see a list of commands...';
-			$scope.showWeather = true;
-			$scope.showTime = true;
-			$scope.showEvents = true;
+		function($scope, $interval, $window, $filter, GeolocationService, WeatherService, GoogleApiService){
             $scope.currentWeek = [];
 			$scope.events = [];
-
+            $scope.color = 'white';
 			
 			var updateTime = function() {
                 var today = new Date();
@@ -44,14 +38,6 @@
                 $scope.weeklyForecast = WeatherService.weeklyForecast();
 			};
 
-			var defaultView = function(){
-				$scope.focus = 'default';
-			};
-
-			var restCommand = function() {
-          		$scope.voiceResult = DEFAULT_COMMAND_TEXT;
-        	};
-
         	$window.initGapi = function() {
         		GoogleApiService.initialize(function(){
                     GoogleApiService.getCalendarEvents(function(resp){
@@ -75,16 +61,16 @@
 
             $scope.compareDate = function(start, date){
                 var eventDate = start.dateTime || start.date;
-                eventDate = new Date(eventDate);
+                eventDate = moment(eventDate);
 
 
                 if (!(date instanceof Date)) {
                     return false;
                 };
 
-                return eventDate.getFullYear() == date.getFullYear()
-                        && eventDate.getDate() == date.getDate()
-                        && eventDate.getMonth() == date.getMonth();
+                return eventDate._d.getFullYear() == date.getFullYear()
+                        && eventDate._d.getDate() == date.getDate()
+                        && eventDate._d.getMonth() == date.getMonth();
             };
 
             $scope.isToday = function (date){
@@ -116,63 +102,14 @@
                 });
             }, 5000);
 
-			$scope.focus = 'default';
-			restCommand();
+
 
 			GeolocationService.getLocation().then(function(geoposition){
                 WeatherService.initialize(geoposition).then(updateWeather);
                 $interval(function(){
                     var weatherPromise = WeatherService.refreshWeather();
                     weatherPromise.then(updateWeather());
-                }, 300000);
-            });
-
-            VoiceService.addCommand('What can I say', function() {
-                $scope.focus = "commands";
-            });
-
-            VoiceService.addCommand('Go home', defaultView);
-
-            VoiceService.addCommand('Wake up', defaultView);
-
-            VoiceService.addCommand('Go to sleep', function() {
-                $scope.focus = "sleep";
-            });
-
-            VoiceService.addCommand('Hide (the) weather', function() {
-                $scope.showWeather = false;
-            });
-
-            VoiceService.addCommand('Show (the) weather', function() {
-                $scope.showWeather = true;
-            });
-
-            VoiceService.addCommand('Hide (the) time', function() {
-                $scope.showTime = false;
-            });
-
-            VoiceService.addCommand('Show (the) time', function() {
-                $scope.showTime = true;
-            });
-
-            VoiceService.addCommand('Hide (my) events', function() {
-                $scope.showEvents = false;
-            });
-
-            VoiceService.addCommand('Show (my) events', function() {
-                $scope.showEvents = true;
-            });
-
-            var resetCommandTimeout;
-
-            VoiceService.start(function(listening){
-                $scope.listening = listening;
-            }, function(voiceResult){
-                $scope.voiceResult = voiceResult;
-                $timeout.cancel(resetCommandTimeout);
-            }, function(result){
-                $scope.voiceResult = result[0];
-                resetCommandTimeout = $timeout(restCommand, 5000);
+                }, 30000);
             });
 		}
 	]);

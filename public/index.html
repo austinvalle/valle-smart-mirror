@@ -6,19 +6,18 @@
 	<link rel="stylesheet" href="css/main.css">
 
 	
-	<script src="js/lib/annyang-2.1.0.js"></script>
 	<script src="js/lib/moment-2.11.1.js"></script>
 	<script src="js/lib/jquery-2.2.0.js"></script>
 	<script src="js/lib/angular-1.4.8.js"></script>
 	<script src="js/lib/angular-animate-1.4.8.js"></script>
+	<script src="js/lib/skycons.js"></script>
+	<script src="js/lib/angular-skycons.js"></script>
 
 	<script src="js/main.js"></script>
 	<script src="js/config.js"></script>
 	<script src="app/app.js"></script>
 
-	<script src="app/services/voice-service.js"></script>
 	<script src="app/services/google-api-service.js"></script>
-	<!--<script src="app/services/hue-service.js"></script>-->
 	<script src="app/services/weather-service.js"></script>
 	<script src="app/services/geolocation-service.js"></script>
 
@@ -29,19 +28,16 @@
 	<div>
 		<div class="wrapper">
 			<div class="pull-left">
-				<div class="fade" ng-show="showTime">
+				<div class="fade">
 					<div class="date">{{currentDate | date: 'EEEE, MMMM d yyyy'}}</div>
 					<div class="time">{{currentDate | date: 'hh:mm a'}}</div>
 				</div>
-				<div class="fade" style="margin-top: 90px;" ng-show="showEvents">
+				<div class="fade" style="margin-top: 90px;">
 					<div class="weekly-events" ng-repeat="day in currentWeek">
-						<h4 class="day-header">
-							<span ng-if="isToday(day)"><b>TODAY</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
-							<span ng-if="isTomorrow(day)"><b>TOMORROW</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
-							<span ng-if="!isToday(day) && !isTomorrow(day)"><b>{{day | date: 'EEEE' | uppercase}}</b><i>{{day | date: 'MMMM d yyyy'}}</i></span>
-						</h4>
-						<div class="daily-events" ng-repeat="event in events | orderBy: sortEventDate" ng-if="compareDate(event.start, day)">
-							<span class="event-time">{{event.start.dateTime | date:'h:mm a'}}</span>
+						<div class="daily-events" ng-repeat="event in events | orderBy: sortEventDate" ng-if=" isToday(day) && compareDate(event.start, day)">
+							<img src="img/calendar.png" height="50px" width="50px">
+							<span class="event-time" ng-if="event.start.dateTime == null">All day</span>
+							<span class="event-time" ng-if="event.start.dateTime != null">{{event.start.dateTime | date:'h:mm a'}}</span>
 							<span class="event-title">{{event.summary}}</span>
 							<br>
 						</div>
@@ -49,15 +45,22 @@
 				</div>
 			</div>
 			<div class="pull-right">
-				<div class="pull-right fade" ng-show="showWeather">
+				<div class="pull-right fade">
 					<div class="weather">
 						<div class="current-weather">
 							<span class="temperature">{{currentForecast.temperature | number: 0}}&deg;</span>
+							<skycon icon="currentForecast.icon" size="128" color="color"></skycon>
+							<div class="current-weather-summary">{{currentForecast.summary}}</div>
+							<img src="img/umbrella.png" height="50px" width="50px">
+							<span>{{currentForecast.precipProbability * 100 | number: 0}}%</span>
+							<span>{{currentForecast.minTemp | number: 0}}</span>
+							<span>{{currentForecast.maxTemp | number: 0}}</span>
 						</div>
 						<div class="weekly-weather-summary">{{weeklyForecast.summary}}</div>
 						<div class="weekly-weather" ng-repeat="forecast in weeklyForecast.data" ng-if="$index > 0">
 							<div class="weekly-weather-day">
 								<span class="day">{{forecast.day}}</span>
+								<skycon icon="forecast.icon" size="50" color="color"></skycon>
 								<span class="temperature temperature-min">{{forecast.temperatureMin | number: 0}}&deg;</span>
 								<span class="temperature temperature-max">{{forecast.temperatureMax | number: 0}}&deg;</span>
 							</div>
@@ -69,18 +72,8 @@
 		<div class="container">
 			<div class="middle-center"></div>
 			<div class="bottom-center">
-				<div class="commands animate-grow" ng-show="focus == 'commands'">
-					<dl>
-						<dt>What can I say?</dt>
-						<dd>Shows a list of voice commands available to you</dd>
-						<dt>Go home</dt>
-						<dd>Takes you back to the home screen</dd>
-					</dl>
-				</div>
-				<div class="voiceResult" ng-bind="voiceResult"></div>
 			</div>
 		</div>
 	</div>
-	<div ng-show="focus == 'sleep'" class="sleep-cover fade"></div>
 </body>
 </html>
