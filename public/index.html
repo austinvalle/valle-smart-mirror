@@ -29,40 +29,24 @@
 		<div class="wrapper">
 			<div class="pull-left">
 				<div class="fade">
-					<div class="date">{{currentDate | date: 'EEEE, MMMM d yyyy'}}</div>
-					<div class="time">{{currentDate | date: 'hh:mm a'}}</div>
-				</div>
-				<div class="fade" style="margin-top: 90px;">
-					<div class="weekly-events" ng-repeat="day in currentWeek">
-						<div class="daily-events" ng-repeat="event in events | orderBy: sortEventDate" ng-if=" isToday(day) && compareDate(event.start, day)">
-							<img src="img/calendar.png" height="50px" width="50px">
-							<span class="event-time" ng-if="event.start.dateTime == null">All day</span>
-							<span class="event-time" ng-if="event.start.dateTime != null">{{event.start.dateTime | date:'h:mm a'}}</span>
-							<span class="event-title">{{event.summary}}</span>
-							<br>
-						</div>
-					</div>
+					<div class="time">{{currentDate | date: 'hh:mm'}}<span class="meridian">{{currentDate | date: 'a'}}</span></div>
+					<div class="date">{{currentDate | date: 'EEE'}}<span class="dateDay">{{currentDate | date: ' d '}}</span>{{currentDate | date: 'MMMM'}}</div>
 				</div>
 			</div>
 			<div class="pull-right">
 				<div class="pull-right fade">
 					<div class="weather">
 						<div class="current-weather">
-							<span class="temperature">{{currentForecast.temperature | number: 0}}&deg;</span>
-							<skycon icon="currentForecast.icon" size="128" color="color"></skycon>
+						<skycon icon="currentForecast.icon" size="300" color="color"></skycon>
 							<div class="current-weather-summary">{{currentForecast.summary}}</div>
-							<img src="img/umbrella.png" height="50px" width="50px">
-							<span>{{currentForecast.precipProbability * 100 | number: 0}}%</span>
-							<span>{{currentForecast.minTemp | number: 0}}</span>
-							<span>{{currentForecast.maxTemp | number: 0}}</span>
+							<div class="temperature">{{currentForecast.temperature | number: 0}}<span class="tempDegree">&deg;F</span></div>
 						</div>
-						<div class="weekly-weather-summary">{{weeklyForecast.summary}}</div>
-						<div class="weekly-weather" ng-repeat="forecast in weeklyForecast.data" ng-if="$index > 0">
+						<div class="weekly-weather" ng-repeat="forecast in weeklyForecast.data" ng-if="$index > 0 && $index < 4">
 							<div class="weekly-weather-day">
 								<span class="day">{{forecast.day}}</span>
 								<skycon icon="forecast.icon" size="50" color="color"></skycon>
-								<span class="temperature temperature-min">{{forecast.temperatureMin | number: 0}}&deg;</span>
-								<span class="temperature temperature-max">{{forecast.temperatureMax | number: 0}}&deg;</span>
+								<span class="temperature temperature-min">{{forecast.temperatureMin | number: 0}}<span class="tempDegree" style="font-size: 16px">&deg;F</span></span>
+								<span class="temperature temperature-max">{{forecast.temperatureMax | number: 0}}<span class="tempDegree" style="font-size: 16px">&deg;F</span></span>
 							</div>
 						</div>
 					</div>
@@ -70,8 +54,25 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="middle-center"></div>
-			<div class="bottom-center">
+			<div class="middle-center">
+			</div>
+			<div class="bottom">
+				<div class="weekly-events" ng-repeat="day in currentWeek">
+					<div class="daily-events" ng-style="$index === 3 && {'border-right': 0}" ng-repeat="event in events | orderBy: sortEventDate | filter: compareDate(day) | limitTo: 4">			
+						<div class="event-time">
+							<span ng-if="event.start.dateTime == null" class="start">All day</span>
+							<span ng-if="event.start.dateTime != null" class="start">{{event.start.dateTime | date:'h:mm a'}}</span>
+							<span ng-if="event.end.dateTime != null" class="start">- {{event.end.dateTime | date:'h:mm a'}}</span>
+						</div>
+						<br>
+						<div class="event-title">{{event.summary}}</div>
+						<br>
+						<div class="event-location" ng-if="event.location != null">{{event.location}}</div>
+					</div>
+				</div>
+				<div class="pull-right">
+					<div class="remainingEvents" ng-if="events.length != 0 && events.length - 4 != 0"><span class="heavyFont">{{ events.length - 4 }}</span> MORE EVENTS...</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -41,7 +41,7 @@
         	$window.initGapi = function() {
         		GoogleApiService.initialize(function(){
                     GoogleApiService.getCalendarEvents(function(resp){
-                        $scope.events = resp.items;
+                        $scope.events = $filter('filter')(resp.items, $scope.compareDate(new Date()));
                     });
                 });
         	};
@@ -59,18 +59,23 @@
                 return moment(event.start.dateTime || event.start.date);
             };
 
-            $scope.compareDate = function(start, date){
-                var eventDate = start.dateTime || start.date;
-                eventDate = moment(eventDate);
+            $scope.compareDate = function(date){
+                return function(event) {
+                    var eventDate = event.start.dateTime || event.start.date;
+                    eventDate = moment(eventDate);
 
+                    if(!$scope.isToday(eventDate._d)){
+                        return false;
+                    }
 
-                if (!(date instanceof Date)) {
-                    return false;
-                };
+                    if (!(date instanceof Date)) {
+                        return false;
+                    };
 
-                return eventDate._d.getFullYear() == date.getFullYear()
+                    return eventDate._d.getFullYear() == date.getFullYear()
                         && eventDate._d.getDate() == date.getDate()
                         && eventDate._d.getMonth() == date.getMonth();
+                };
             };
 
             $scope.isToday = function (date){

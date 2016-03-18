@@ -32,11 +32,14 @@ dt {
 }
 
 .date {
-    font-size: 42px;
+    font-size: 55px;
+    text-align: center;
+    font-weight: 200;
 }
 
 .time {
-    font-size: 110px;
+    font-size: 165px;
+    font-weight: 300;
 }
 
 .weather {
@@ -50,13 +53,13 @@ dt {
 }
 
 .current-weather-summary {
-    font-size: 12px;
-    max-width: 55%;
-    text-align: left;
+    font-size: 40px;
+    text-align: center;
+    font-weight: 200;
 }
 
 .weekly-weather {
-    margin-right: 10px;
+    text-align: center;
     font-size: 22px;
 }
 
@@ -106,10 +109,19 @@ dt {
     justify-content: center;
 }
 
-.bottom-center {
+.bottom {
     width: 100%;
-    text-align: center;
     margin-bottom: 20px;
+}
+
+.right {
+    float: right;
+    text-align: right;
+}
+
+.left {
+    float: left;
+    text-align: left;
 }
 
 .commands {
@@ -180,14 +192,66 @@ dt {
     text-align: right;
 }
 
+.small-temperature {
+    font-size: 40px;
+}
+
+.temperature {
+    text-align: center;
+    font-weight: 600;
+}
+
+.meridian {
+    font-size: 60px;
+    font-weight: 200;
+}
+
+.dateDay {
+    font-weight: 700;
+}
+
+.tempDegree {
+    font-size: 50px;
+    font-weight: 200;
+}
+
+.daily-events {
+    float: left;
+    padding: 8px;
+    text-align: center;
+    height: 202px;
+    width: 250px;
+    border-right: solid 1px white;
+}
+
+.day {
+    font-weight: 200;
+}
+
 .event-time {
-    margin-left: 5px;
+    padding-top: 10%;
+    font-size: 27px;
+    font-weight: 400;
 }
 
 .event-title {
-    float: right;
+    font-size: 27px;
+    font-weight: 700;
 }
 
-.small-temperature {
-    font-size: 40px;
+.event-location {
+    font-size: 23px;
+    font-weight: 200;
+}
+
+.remainingEvents {
+    margin-bottom: -20px;
+    padding: 5px 25px 5px 25px;
+    font-weight: 200;
+    font-size: 21px;
+    border: solid 1px white;
+}
+
+.heavyFont {
+    font-weight: 700;
 }
